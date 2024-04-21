@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./Slider.css";
 import leftArrow from "../../assets/left-arrow.svg";
 import rightArrow from "../../assets/right-arrow.svg";
@@ -7,6 +7,7 @@ import sliderData from "../../data/sliderData";
 export default function Slider() {
   const [sliderIndex, setSliderIndex] = useState(1);
 
+  // eslint-disable-next-line
   function toggleImage(direction: number) {
     if (sliderIndex + direction > sliderData.length) {
       setSliderIndex(1);
@@ -16,6 +17,14 @@ export default function Slider() {
       setSliderIndex(sliderIndex + direction);
     }
   }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      toggleImage(1);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [toggleImage]);
+
   return (
     <>
       <p className="index-info">
@@ -32,13 +41,19 @@ export default function Slider() {
         />
 
         <button
-        onClick={()=> {toggleImage(-1)}}
-        className="navigation-button prev-button">
+          onClick={() => {
+            toggleImage(-1);
+          }}
+          className="navigation-button prev-button"
+        >
           <img src={leftArrow} alt="previous image" />
         </button>
         <button
-        onClick={()=> {toggleImage(1)}}
-        className="navigation-button next-button">
+          onClick={() => {
+            toggleImage(1);
+          }}
+          className="navigation-button next-button"
+        >
           <img src={rightArrow} alt="next image" />
         </button>
       </div>
